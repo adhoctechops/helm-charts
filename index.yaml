@@ -3,6 +3,16 @@ entries:
   demo:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-08-06T05:29:49.420451544Z"
+    description: A Helm chart for Kubernetes
+    digest: 4cff5bcbdb3366e5a97bcb946107bfbce9cf4acacbdb31e1cf9a80e029315f4b
+    name: demo
+    type: application
+    urls:
+    - https://github.com/adhoctechops/helm-charts/releases/download/demo-0.1.3/demo-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-08-06T05:06:51.253127507Z"
     description: A Helm chart for Kubernetes
     digest: 549fd17ed66ec3a9134446f3ca2421c2e4d6e2285b575aa68c24beb18c456652
@@ -22,6 +32,16 @@ entries:
     - https://github.com/adhoctechops/helm-charts/releases/download/demo-0.1.0/demo-0.1.0.tgz
     version: 0.1.0
   demo-1:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-08-06T05:29:49.518066233Z"
+    description: A Helm chart for Kubernetes
+    digest: c71ed56c1226a768af10d73f9d7cfa83db7b3f3a0453ef6e267d3659bb9ffe63
+    name: demo-1
+    type: application
+    urls:
+    - https://github.com/adhoctechops/helm-charts/releases/download/demo-1-0.1.2/demo-1-0.1.2.tgz
+    version: 0.1.2
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2024-08-06T05:06:51.369812549Z"
@@ -73,4 +93,4 @@ entries:
     urls:
     - https://github.com/adhoctechops/helm-charts/releases/download/18.1.7-helm/nginx-18.1.7.tgz
     version: 18.1.7
-generated: "2024-08-06T05:16:17.824484046Z"
+generated: "2024-08-06T05:29:49.518088515Z"
