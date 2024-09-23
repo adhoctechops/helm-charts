@@ -1,0 +1,21 @@
+{{- range $srvName, $srvValue := .Values.applications }}
+{{- with $srvValue.routers -}}
+apiVersion: v1
+kind: Service
+metadata:
+  {{- $resourceNameParams := dict "projectName" $.Values.global.projectName "serviceName" $srvName }}
+  name: {{ include "fullResourceName" $resourceNameParams }}-svc
+  labels:
+    {{- include "labels" (dict "global" $.Values.global "module" $srvName) | nindent 4 }}
+spec:
+  type: ClusterIP
+  {{- with $srvValue.ports }}
+  ports:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  selector:
+    {{- include "labels" (dict "global" $.Values.global "module" $srvName) | nindent 4 }}
+
+{{- end }}
+---
+{{- end }}

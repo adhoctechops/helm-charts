@@ -1,0 +1,65 @@
+{{- $HOME_DIR := "/home/swadm" -}}
+{{- range $srvName, $srvValue := .Values.applications }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "resourceName" $ }}-{{ $srvName }}-deploy
+  labels:
+    {{- include "labels" (dict "global" $.Values.global "module" $srvName) | trim | nindent 4 }}
+spec:
+  {{- include "replica-strategy" (dict "global" $.Values.global "module" $srvName) | trim | nindent 2 }}
+  selector:
+    matchLabels:
+      {{- include "labels" (dict "global" $.Values.global "module" $srvName) | trim | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: {{ lower $srvName | quote }}
+        {{- include "pod-annotations" $ | trim | nindent 8 }}
+      labels:
+        {{- include "labels" (dict "global" $.Values.global "module" $srvName) | trim | nindent 8 }}
+    spec:
+      {{- with $.Values.global.securityContext }}
+      securityContext:
+        {{- toYaml . | trim | nindent 8 }}
+      {{- end }}
+      {{- with $.Values.global.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | trim | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- include "init-copy-secret" (dict "root" $ "module" $srvName) | trim | nindent 8 }}
+      containers:
+        {{- include "app-container" (dict "root" $ "name" $srvName "service" $srvValue) | trim | nindent 8 }}
+      volumes:
+        - name: vault-volume
+          emptyDir: {}
+        {{- if and $srvValue.exposeConfigMaps.items (kindIs "map" $srvValue.exposeConfigMaps.items) }}
+        - name: {{ include "resourceName" $ }}-{{ $srvName }}-cm-volume
+          configMap:
+            name: {{ include "resourceName" $ }}-{{ $srvName }}-cm
+            optional: true
+        - name: {{ include "resourceName" $ }}-{{ $srvName }}-expose-cm-volume
+          configMap:
+            name: {{ include "resourceName" $ }}-{{ $srvName }}-expose-cm
+            optional: true
+        {{- end }}
+        - name: {{ include "resourceName" $ }}-{{ $srvName }}-secret-volume
+          secret:
+            secretName: {{ include "resourceName" $ }}-{{ $srvName }}-secret
+            optional: true
+        {{- with $srvValue.persistentVolumes -}}
+        {{- if .enabled }}
+        {{- range $name, $meta := .claims -}}
+        {{- $resourceNameParams := dict "projectName" $.Values.global.projectName "serviceName" $srvName }}
+        - name: {{ $name }}-data
+          persistentVolumeClaim: 
+            claimName: {{ include "fullResourceName" $resourceNameParams }}-{{ $name }}-pvc
+        {{- end }}
+        {{- end }}
+        {{- end }}
+        {{- if $srvValue.additionalVolumes }}
+        {{- toYaml $srvValue.additionalVolumes | trim | nindent 8 }}
+        {{- end }}
+---
+{{- end }}

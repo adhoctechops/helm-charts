@@ -1,0 +1,21 @@
+{{- range $srvName, $srvValue := .Values.applications }}
+---
+{{- $maxConn := 32 }}
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: {{ include "resourceName" $ }}-{{ $srvName }}-dr
+spec:
+  host: {{ include "resourceName" $ }}-{{ $srvName }}-svc
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: {{ mul $maxConn 2 }}
+        connectTimeout: 5s
+        tcpKeepalive:
+          time: 10s
+      http:
+        http1MaxPendingRequests: 1024
+        http2MaxRequests: {{ mul $maxConn 2 }}
+---
+{{- end }}

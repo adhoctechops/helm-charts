@@ -1,0 +1,19 @@
+{{- range $srvName, $srvValue := .Values.applications }}
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  {{- $resourceNameParams := dict "projectName" $.Values.global.projectName "serviceName" $srvName }}
+  name: {{ include "fullResourceName" $resourceNameParams }}-svc
+spec:
+  hosts:
+  {{- range $.Values.global.istioConfig.hosts }}
+    - {{ . | quote }}
+  {{- end}}
+  gateways:
+  {{- range $.Values.global.istioConfig.gateways }}
+    - {{ . | quote }}
+  {{- end}}
+  http:
+    {{- toYaml $srvValue.istioConfig.routes | nindent 4 }}
+{{- end }}
