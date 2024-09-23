@@ -9,7 +9,7 @@ metadata:
     {{- include "labels" (dict "global" $.Values.global "module" $srvName) | nindent 4 }}
 spec:
   type: ClusterIP
-  {{- with $srvValue.ports }}
+  {{- with $srvValue.routers.ports }}
   ports:
     {{- toYaml . | nindent 4 }}
   {{- end }}
