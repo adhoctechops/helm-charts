@@ -55,6 +55,16 @@ entries:
   helm-deployment:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-09-23T16:27:58.450713089Z"
+    description: A Helm chart for Kubernetes
+    digest: 6903540d4a4a32a97718ccf005b9b56c96acfb4c2749f7098a92ed8cce0a7984
+    name: helm-deployment
+    type: application
+    urls:
+    - https://github.com/adhoctechops/helm-charts/releases/download/helm-deployment-0.0.2/helm-deployment-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-09-23T13:17:16.682022934Z"
     description: A Helm chart for Kubernetes
     digest: a53d259acad36e1cf7311ac8bf2b8f6e23167534984fbbf28e7dafae48c2f31d
@@ -104,4 +114,4 @@ entries:
     urls:
     - https://github.com/adhoctechops/helm-charts/releases/download/18.1.7-helm/nginx-18.1.7.tgz
     version: 18.1.7
-generated: "2024-09-23T13:17:16.682034996Z"
+generated: "2024-09-23T16:27:58.45072931Z"
